@@ -1,0 +1,51 @@
+<div class="container login">
+    <div class="span12 last">
+        <div class="wrap">
+            <div class="title">
+                <strong>用户登录</strong>
+            </div>
+            <form id="loginForm">
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>
+                            用户名:
+                        </th>
+                        <td>
+                            <input type="text" id="username" name="username" v-model="user.userName" class="text" maxlength="20">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            密&nbsp;&nbsp;码:
+                        </th>
+                        <td>
+                            <input type="password" id="password" name="password" v-model="user.password" class="text" maxlength="20" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;&nbsp;</th>
+                        <td>&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <td>
+                            <input type="button" class="submit" value="登 录" @click="loginMethod()"/>
+                            <a style="margin-left: 30px;padding-left:20px;color: red" href="/resetPassword">忘记密码？</a>
+                        </td>
+                    </tr>
+                    <tr class="register">
+                        <th>&nbsp;
+                        </th>
+                        <td>
+                            <a href="/register">立即注册</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+

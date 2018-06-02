@@ -1,0 +1,35 @@
+<div class="container login">
+    <div class="span12 last">
+        <div class="wrap" style="height: 300px">
+            <div class="title">
+                <strong>管理员登录</strong>
+            </div>
+            <form id="">
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>
+                            用户名:
+                        </th>
+                        <td>
+                            <input type="text" id="username" name="username" v-model="user.userName" class="text" maxlength="20">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            密&nbsp;&nbsp;码:
+                        </th>
+                        <td>
+                            <input type="password" id="password" name="password" v-model="user.password" class="text" maxlength="20" autocomplete="off">
+                        </td>
+                    </tbody>
+                </table>
+                <div style="margin-top: 50px;text-align: center">
+                    <input type="button" class="submit" value="登 录" @click="managerLoginMethod()"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

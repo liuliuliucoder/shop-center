@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iss.shop.dao.AddressMapper">
+  <resultMap id="BaseResultMap" type="com.iss.shop.domain.Address">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
+    <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile" />
+    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="country_id" jdbcType="INTEGER" property="countryId" />
+    <result column="town_id" jdbcType="INTEGER" property="townId" />
+    <result column="address_detail" jdbcType="VARCHAR" property="addressDetail" />
+    <result column="post_code" jdbcType="VARCHAR" property="postCode" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="modified" jdbcType="TIMESTAMP" property="modified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, receiver_name, receiver_phone, receiver_mobile, province_id, city_id, 
+    country_id, town_id, address_detail, post_code, created, modified
+  </sql>
+  <insert id="insert" parameterType="com.iss.shop.domain.Address" useGeneratedKeys="true" keyProperty="id">
+    insert into shop_address (id, user_id, receiver_name,
+    receiver_phone, receiver_mobile, province_id,
+    city_id, country_id,town_id, address_detail,
+    post_code, created, modified
+    )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR},
+    #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER},
+    #{cityId,jdbcType=INTEGER}, #{countryId,jdbcType=INTEGER},#{townId,jdbcType=INTEGER}, #{addressDetail,jdbcType=VARCHAR},
+    #{postCode,jdbcType=VARCHAR}, now(), now()
+    )
+  </insert>
+  <delete id="deleteByAddressIdUserId" parameterType="map">
+    DELETE  FROM  shop_address
+    where id = #{id}
+    and user_id = #{userId}
+  </delete>
+  <update id="updateByAddress" parameterType="com.iss.shop.domain.Address">
+    update shop_address
+    set
+    receiver_name = #{receiverName,jdbcType=VARCHAR},
+    receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+    receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+    province_id = #{provinceId,jdbcType=INTEGER},
+    city_id = #{cityId,jdbcType=INTEGER},
+    country_id = #{countryId,jdbcType=INTEGER},
+    town_id = #{townId,jdbcType=INTEGER},
+    address_detail = #{addressDetail,jdbcType=VARCHAR},
+    post_code = #{postCode,jdbcType=VARCHAR},
+    created = #{created,jdbcType=TIMESTAMP},
+    modified = now()
+    where id = #{id,jdbcType=INTEGER}
+    and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByAddressIdUserId" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from shop_address
+    where id = #{id}
+    and user_id = #{userId}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from shop_address
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from shop_address
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+</mapper>

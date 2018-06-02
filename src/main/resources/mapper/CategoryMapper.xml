@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iss.shop.dao.CategoryMapper">
+    <resultMap id="BaseResultMap" type="com.iss.shop.domain.Category">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="category_name" jdbcType="VARCHAR" property="categoryName"/>
+        <result column="sort_order" jdbcType="INTEGER" property="sortOrder"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"/>
+        <result column="modified" jdbcType="TIMESTAMP" property="modified"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, parent_id, category_name, sort_order, created, modified
+  </sql>
+    <insert id="insert" parameterType="com.iss.shop.domain.Category">
+    insert into shop_category (id, parent_id, category_name,
+    sort_order, created,
+    modified)
+    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR},
+    #{sortOrder,jdbcType=INTEGER}, now(),
+    now())
+  </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.iss.shop.domain.Category">
+        update shop_category
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="categoryName != null">
+                category_name = #{categoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="sortOrder != null">
+                sort_order = #{sortOrder,jdbcType=INTEGER},
+            </if>
+            <if test="created != null">
+                created = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modified != null">
+                modified = now(),
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByCategoryId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from shop_category
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectCategoryChildrenByParentId" resultMap="BaseResultMap" parameterType="int">
+        select
+        <include refid="Base_Column_List"/>
+        from shop_category
+        where parent_id = #{parentId}
+    </select>
+
+    <select id="selectForParent" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from shop_category where parent_id =0
+    </select>
+
+    <select id="selectForSubCategory" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from shop_category where parent_id !=0
+    </select>
+</mapper>

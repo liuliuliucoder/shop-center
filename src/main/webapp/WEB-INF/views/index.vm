@@ -1,0 +1,100 @@
+<html>
+<head>
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/index/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/slider/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/common/nav/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/common/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/common/header/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/list/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/detail/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/cart/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/user-center/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/user-update-password/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap3.3.5/css/bootstrap.min.css" >
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap3.3.5/css/bootstrap-fileinput.css" >
+
+</head>
+<body>
+<div id="index_content">
+    <router-view></router-view>
+</div>
+<template id="index">
+    #include("/index_page.vm")
+</template>
+<template id="login">
+    #include("/login.vm")
+</template>
+<template id="mlogin">
+    #include("/manager-login.vm")
+</template>
+<template id="register">
+    #include("/register.vm")
+</template>
+<template id="myAccount">
+    #parse("/account_content.vm")
+</template>
+<template id="list">
+    #include("/list.vm")
+</template>
+<template id="detail">
+    #include("/detail.vm")
+</template>
+<template id="cart">
+    #include("/cart.vm")
+</template>
+<template id="order">
+    #include("/order.vm")
+</template>
+<template id="mContent">
+    #parse("/manager-content.vm")
+</template>
+<template id="result">
+    #parse("/result.vm")
+</template>
+</body>
+<script src="/static/js/plugins/jquery-2.2.3.min.js"></script>
+<script src="/static/js/plugins/ajaxfileupload.js"></script>
+<script src="/static/css/bootstrap3.3.5/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/static/js/plugins/bootstrap-fileinput.js"></script>
+<script src="/static/js/plugins/vue.min.js" type="text/javascript"></script>
+<script src="/static/js/plugins/vue-resource.min.js" type="text/javascript"></script>
+<script src="/static/js/plugins/vue-router.min.js" type="text/javascript"></script>
+<script src="/static/js/index/index-api.js" type="text/javascript"></script>
+<script src="/static/js/index/index-router.js" type="text/javascript"></script>
+<script src="/static/js/index/index-components.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    function addFileUpload(){
+        $.ajaxFileUpload({
+            url:'/upload',
+            fileElementId:'inputFile',
+            dataType:'json',
+            type:'post',
+            success:function(data){
+                if(data && data.value){
+                    //上传成功
+                    $("#picImg").attr("src",data.data);
+                    $("#addImage").val(data.data);
+                }
+            }
+        });
+    };
+    function modifyFileUpload(){
+        $.ajaxFileUpload({
+            url:'/upload',
+            fileElementId:'modifyInputFile',
+            dataType:'json',
+            type:'post',
+            success:function(data){
+                if(data && data.value){
+                    //上传成功
+                    $("#modifyImg").attr("src",data.data);
+                    $("#modifyImage").val(data.data);
+                }
+            }
+        });
+    };
+
+</script>
+</html>

@@ -1,0 +1,187 @@
+
+<div style="float: left;margin-left:10px;width:920px;height:auto;background-color: #eee;">
+    <div style="position:relative">
+        <div style="margin-top: 30px;margin-left: 10px;">
+            <div>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label style="margin-left: 30px">商品编号:</label>
+                        <input type="text" class="form-control" v-model="query.id">
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-left: 30px">商品状态:</label>
+                        <select class="form-control">
+                            <option value="0">全部</option>
+                            <option v-for="status in statusList" value="status.key">{{status.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-left: 30px">类别:</label>
+                        <select class="form-control">
+                            <option value="-1">全部</option>
+                            <option v-for="category in categoryList" value="category.key">{{category.value}}</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-default" style="margin-left: 20px" @click="searchByConditions">查询</button>
+                    <button class="btn btn-primary" style="margin-left: 10px" data-toggle="modal" data-target="#addProduct">添加</button>
+                </form>
+                <div style="margin: 30px">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td style="font-size:14px;width:5%;text-align: center;">
+                                编号
+                            </td>
+                            <td style="font-size:14px;width:14%;text-align: center;">
+                                商品名称
+                            </td>
+                            <td style="font-size:14px;width:20%;text-align: center;">
+                                子标题
+                            </td>
+                            <td style="font-size:14px;width:9%;text-align: center;">
+                                价格
+                            </td>
+                            <td style="font-size:14px;width:8%;text-align: center;">
+                                商品状态
+                            </td>
+                            <td style="font-size:14px;width:8%;text-align: center;">
+                                商品库存
+                            </td>
+                            <td style="font-size:14px;width:8%;text-align: center;">
+                                商品主图
+                            </td>
+                            <td style="font-size:14px;width:28%;text-align: center;">
+                                操作
+                            </td>
+                        </tr>
+                        <tr style="height: auto" v-for="product in productList"  v-bind:key="key">
+                            <td style="font-size:14px;text-align: center;">{{product.id}}</td>
+                            <td style="font-size:14px;text-align: center;">{{product.productName}}</td>
+                            <td style="font-size:14px;text-align: center;">{{product.subtitle}}</td>
+                            <td style="font-size:14px;text-align: center;">{{product.price}}</td>
+                            <td style="font-size:14px;text-align: center;">{{product.statusName}}</td>
+                            <td style="font-size:14px;text-align: center;">{{product.count}}</td>
+                            <td style="font-size:14px;text-align: center;"><img width="40px" height="40px" style="margin-left: 40px"  src="{{product.mainImage}}" alt="商品图片" /></td>
+                            <td style="font-size:14px;text-align: center;">
+                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editProduct">修改</button>
+                                <button class="btn btn-info btn-xs" @click="queryProductDetail(product.id)">查看详情</button>
+                                <button class="btn btn-danger btn-xs" @click="delProduct(product.id)">删除</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">修改</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form enctype="multipart/form-data">
+                            <div class="form-group">
+                                商品编号:<input type="text" class="form-control"  v-model="productEditForm.id" value="{{product.id}}" disabled>
+                            </div>
+                            <div class="form-group">
+                                商品名称:<input type="text" class="form-control"  v-model="productEditForm.productName" value="{{product.productName}}">
+                            </div>
+                            <div class="form-group">
+                                子标题:<input type="text" class="form-control" v-model="productEditForm.subTitle" value="{{product.subTitle}}">
+                            </div>
+                            <div class="form-group">
+                                价格:<input type="text" class="form-control" v-model="productEditForm.price" value="{{product.price}}">
+                            </div>
+                            <div class="form-group">
+                                商品状态:
+                                <select class="form-control" v-model="productEditForm.status">
+                                    <option  v-for="status in statusList" :value="status.key">{{status.value}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                上级类别名称:
+                                <select class="form-control" v-model="productEditForm.categoryId">
+                                    <option v-for="categoryId in categoryList" :value="categoryId.key">{{categoryId.value}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                库存:<input type="text" class="form-control"  v-model="productEditForm.count" value="{{product.count}}">
+                            </div>
+                            <div class="form-group" id="uploadForm">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" @onclick="saveOrUpdateProduct">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">新增商品</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                商品名称:<input type="text" class="form-control"  v-model="productForm.productName">
+                            </div>
+                            <div class="form-group">
+                                子标题:<input type="text" class="form-control" v-model="productForm.subTitle">
+                            </div>
+                            <div class="form-group">
+                                价格:<input type="text" class="form-control" v-model="productForm.price">
+                            </div>
+                            <div class="form-group">
+                                商品状态:
+                                <select class="form-control" v-model="productForm.status">
+                                    <option  v-for="status in statusList" :value="status.key">{{status.value}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                上级类别名称:
+                                <select class="form-control" v-model="productForm.categoryId">
+                                    <option v-for="categoryId in categoryList" :value="categoryId.key">{{categoryId.value}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                库存:<input type="text" class="form-control"  v-model="productForm.count">
+                            </div>
+                            <div class="form-group" id="uploadForm">
+                                <div class="h4">图片预览</div>
+                                <div class="fileinput fileinput-new">
+                                    <div class="fileinput-new thumbnail" style="width: 200px;height: auto;max-height:150px;">
+                                        <input id="addImage" class="form-control" name="addImage" value="addImage"/>
+                                        <img id="picImg" style="width: 100%;height: auto;max-height: 140px;" src="/static/imgs/noimage.png" alt="" />
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                    <div>
+                                    <span class="btn btn-primary btn-file">
+                                        <span class="fileinput-new">选择文件</span>
+                                        <input type="file" name="file" id="inputFile" accept="image/gif,image/jpeg,image/x-png" onchange="addFileUpload();"/>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" @click="saveOrUpdateProduct">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

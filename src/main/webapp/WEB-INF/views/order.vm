@@ -1,0 +1,105 @@
+<style type="text/css">
+    .vender_info{
+        font-size:14px;
+        padding:3px;
+        margin-right:20px;
+    }
+    .vender_info_div{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+</style>
+<div v-if="navShow">
+    <div class="w">
+        <div class="nav">
+            <ul class="nav-list">
+                <li class="nav-item" v-if="isLogined">
+                    <span class="link js-login"><a class="link" @click="toLogin">登陆</a></span>
+                    <span class="link js-register"><a class="link" @click="toRegister">注册</a></span>
+                </li>
+                <li class="nav-item" v-if="!isLogined">
+                    <span class="link-text">欢迎，
+                        <span class="username">{{user.userName}}</span>
+                    </span>
+                    <span class="link"><a class="link" @click="loginOut()">退出</a></span>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="toMyAccount">
+                        我的账户
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="toMyCart">
+                        <i class="fa fa-shopping-cart"></i>
+                        我的购物车(<span class="cart-count">{{myCartCount}}</span>)
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="managerToLogin">
+                        <i class="fa fa-shopping-cart"></i>
+                        管理员入口
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="header" class="header">
+        <div class="w">
+            <div class="search-con">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div style="text-align: right"><button @click="toIndex">继续购物</button></div>
+<div id="cart" class="crumb">
+    <div class="w">
+        <div class="crumb-con">
+            <span class="link-text">订单</span>
+        </div>
+    </div>
+</div>
+<div class="page-wrap w">
+    <div class="cart-header">
+        <div style="width: 500px;margin-left:10px;"><span class="vender_info">订单编号:{{orderVo.orderNo}}</span></div>
+        <div style="margin-bottom:20px;margin-top:20px;">
+            <div style="position:relative;">
+                <div class="vender_info_div" style="max-width: 400px;margin-left:10px;float:left;" title="{{addressVo.receiverName}}"><span class="vender_info">收货人：{{addressVo.receiverName}}</span></div>
+                <div class="vender_info_div" style="width: 300px;margin-left: 50px;float:left;" title="{{addressVo.addressDetail}}"><span class="vender_info">收货地址：{{addressVo.addressDetail}}</span></div>
+                <div class="vender_info_div" style="width:200px;margin-left:50px;float:right;" title="{{addressVo.receiverMobile}}"><span class="vender_info">联系方式：{{addressVo.receiverMobile}}</span></div>
+                <div class="vender_info_div" style="width: 150px;margin-left: 30px;float:left;" title="{{addressVo.postCode}}"><span class="vender_info">邮编：{{addressVo.postCode}}</span></div>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+        <table class="cart-table">
+            <tr>
+                <th>图片</th>
+                <th>商品名称</th>
+                <th>价格</th>
+                <th>数量</th>
+                <th>小计</th>
+            </tr>
+            <tr v-for="cart in cartList" v-bind:class="'id-' + item.id">
+                <td class="cart-cell cell-img" style="text-align: center">
+                    <a class="link" @click="toProductDetail(cart.productId)">
+                        <img class="p-img" src="{{cart.productImage}}" alt="{{cart.productName}}" />
+                    </a>
+                </td>
+                <td style="text-align: center">
+                    <a class="link" @click="toProductDetail(cart.productId)">{{cart.productName}}</a>
+                </td>
+                <td class="cart-cell cell-price">￥{{cart.currentPrice}}元</td>
+                <td class="cart-cell cell-opera">{{cart.quantity}}</td>
+                <td class="cart-cell cell-total">￥{{cart.totalPrice}}元</td>
+            </tr>
+        </table>
+    </div>
+    <div class="cart-footer">
+        <div class="submit-con">
+            <span>总价：</span>
+            <span class="submit-total">￥{{orderPrice}}元</span>
+            <span class="btn btn-submit"><a class="link" @click="toPay(orderVo.orderNo)">去支付</a></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+@charset "utf-8";
+
+div.register .wrap {
+	margin-bottom: 80px;
+	margin-top: 100px;
+	border: 2px solid #f2f2f2;
+}
+
+div.register .main {
+	padding-bottom: 20px;
+	border: 1px solid #d7d7d7;
+}
+
+div.register .title {
+	height: 40px;
+	line-height: 40px;
+	color: #d8d8d8;
+	font-family: "Microsoft YaHei";
+	border-bottom: 1px dotted #ededed;
+}
+
+div.register .title strong {
+	padding: 0px 10px;
+	color: #3164af;
+	font-size: 18px;
+	font-weight: normal;
+}
+
+div.register table {
+	width: 100%;
+	float: left;
+	margin-top: 20px;
+}
+
+div.register th {
+	width: 90px;
+	padding: 12px;
+	font-weight: normal;
+	text-align: right;
+}
+
+div.register .captcha {
+	width: 130px;
+	text-transform: uppercase;
+	ime-mode: disabled;
+}
+
+div.register .captchaImage {
+	margin-left: 10px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+div.register .submit {
+	width: 120px;
+	height: 37px;
+	line-height: 37px;
+	margin-top: 10px;
+	color: #ffffff;
+	cursor: pointer;
+	background-color:red;
+	outline: none;
+	blr: expression(this.hideFocus = true);
+	border: none;
+}
+
+div.register .agreement {
+	height: 96px;
+	line-height: 24px;
+	padding: 0px 4px;
+	color: #999999;
+	overflow-y: scroll;
+	border: 1px solid #e6e6e6;
+}
+
+ul li{
+	float: left;
+	margin-left: 0px;
+}
+
+.login_li{
+	color: #ff3b3f;
+	margin-left: 30px;
+	padding:15px;
+}

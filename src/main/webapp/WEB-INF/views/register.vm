@@ -1,0 +1,100 @@
+<div class="container register">
+    <div class="span12 last">
+        <div class="wrap">
+            <div class="main clearfix">
+                <div class="title">
+                    <strong>欢迎注册</strong>
+                </div>
+                <form id="registerForm">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>
+                                <span class="requiredField">*</span>用户名:
+                            </th>
+                            <td>
+                                <input type="text" id="username" v-model="user.userName" class="text" maxlength="20"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span class="requiredField">*</span>密&nbsp;&nbsp;码:
+                            </th>
+                            <td>
+                                <input type="password" id="password" v-model="user.password" class="text" maxlength="20"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span class="requiredField">*</span>确认密码:
+                            </th>
+                            <td>
+                                <input id="repassword" type="password" v-model="user.rePassword" class="text" maxlength="20"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span class="requiredField">*</span>E-mail:
+                            </th>
+                            <td>
+                                <input type="email" id="email" v-model="user.email" class="text" maxlength="200">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                昵称:
+                            </th>
+                            <td>
+                                <input type="text" v-model="user.nickName" class="text" maxlength="200"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                电话:
+                            </th>
+                            <td>
+                                <input type="text" v-model="user.phone" class="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                密保问题:
+                            </th>
+                            <td>
+                                <input type="text" v-model="user.question" class="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                答案:
+                            </th>
+                            <td>
+                                <input type="text" v-model="user.answer" class="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span class="requiredField">*</span>验证码:
+                            </th>
+                            <td>
+                                <span>
+                                    <input type="text" class="text" id="verification" name="verification" placeholder="输入验证码">
+                                    <img class="img-responsive" src="/verifyCode" alt="我是验证码" id="imgValida" onclick="this.src='/verifyCode?time='+Math.random()"/>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>&nbsp;
+                            </th>
+                            <td>
+                                <input type="button" class="submit" value="同意协议并注册" @click="register()">
+                                <a href="/login" style="margin-left: 30px;padding-left:20px;color: red">已有账号？去登录</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

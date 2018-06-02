@@ -1,0 +1,44 @@
+
+<div v-if="navShow">
+    <div class="w">
+        <div class="nav">
+            <ul class="nav-list">
+                <li class="nav-item" v-if="isLogined">
+                    <span class="link js-login"><a class="link" @click="managerToLogin">登陆</a></span>
+                </li>
+                <li class="nav-item" v-if="!isLogined">
+                    <span class="link-text">欢迎，
+                        <span class="username">{{user.userName}}</span>
+                    </span>
+                    <span class="link"><a class="link" @click="loginOut()">退出</a></span>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="managerToLogin">
+                        <i class="fa fa-shopping-cart"></i>
+                        管理员入口
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 10px">
+    <div style="width: 150px;height: 800px; margin-left:250px;background-color: #eee;float: left;">
+        <div style="font-size: 16px;padding: 15px"><a class="link" @click="toProductList">商品管理</a></div>
+        <div style="font-size: 16px;padding: 15px"><a class="link" @click="toOrderList">订单管理</a></div>
+    </div>
+
+    <div style="margin-left: 400px">
+        <router-view></router-view>
+    </div>
+    <div style="clear:both"></div>
+
+</div>
+
+<template id="productList">
+    #include("product-content.vm")
+</template>
+<template id="orderList">
+    #include("order-content.vm")
+</template>

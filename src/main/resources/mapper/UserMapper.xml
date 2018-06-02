@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iss.shop.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.iss.shop.domain.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="role" jdbcType="INTEGER" property="role" />
+    <result column="birth" jdbcType="TIMESTAMP" property="birth" />
+    <result column="question" jdbcType="VARCHAR" property="question" />
+    <result column="answer" jdbcType="VARCHAR" property="answer" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="modified" jdbcType="TIMESTAMP" property="modified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_name, password, nick_name, email, phone, role, birth, question, answer,
+    created, modified
+  </sql>
+
+  <select id="getPasswordByUserName" parameterType="java.lang.String" resultType="java.lang.String">
+    select password
+    from shop_user
+    where user_name=#{userName}
+  </select>
+
+  <insert id="insertUserInfo" parameterType="com.iss.shop.domain.User">
+    insert into shop_user (user_name,
+    password, nick_name, email,
+    phone, role, birth,
+    question, answer, created,
+    modified)
+    values (#{userName,jdbcType=VARCHAR},
+    #{password,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+    #{phone,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{birth,jdbcType=TIMESTAMP},
+    #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP},
+    #{modified,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="updatePassword" parameterType="java.util.Map">
+    update shop_user
+    set
+    password=#{password},modified = now()
+    where
+    user_name=#{userName,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from shop_user
+    where
+    user_name=#{userName}
+  </select>
+
+  <select id="checkUserName" resultType="int" parameterType="java.lang.String">
+    select count(1)
+    from shop_user
+    where user_name=#{userName}
+  </select>
+
+  <select id="getUserByUserNamePassword" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from shop_user
+    where
+    user_name=#{userName} and password=#{password}
+  </select>
+
+  <update id="updatePasswordByUsername" parameterType="map">
+    update shop_user
+    SET password = #{passwordNew},modified = now()
+    where username = #{username}
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.iss.shop.domain.User">
+    update shop_user
+    set
+    <if test="password != null" >
+      password=#{password},
+    </if>
+    <if test="nickName != null" >
+      nick_name=#{nickName},
+    </if>
+    <if test="email != null" >
+      email=#{email},
+    </if>
+    <if test="phone != null" >
+      phone=#{phone},
+    </if>
+    <if test="role != null" >
+      role=#{role},
+    </if>
+    <if test="birth != null" >
+      birth=#{birth},
+    </if>
+    <if test="question != null" >
+      question=#{question},
+    </if>
+    <if test="answer != null" >
+      answer=#{answer},
+    </if>
+    <if test="created != null" >
+      created=#{created},
+    </if>
+      modified=#{modified}
+
+    where
+    user_name=#{userName,jdbcType=VARCHAR}
+  </update>
+
+  <select id="checkPassword" resultType="java.lang.String">
+    SELECT
+    password
+    from shop_user
+    where id = #{userId}
+  </select>
+
+  <select id="selectQuestionByUserName" resultType="string" parameterType="string">
+    select
+    question
+    from shop_user
+    where user_name = #{userName}
+  </select>
+
+  <select id="checkAnswer" resultType="int" parameterType="map">
+    select
+    count(1)
+    from shop_user
+    where user_name=#{userName}
+    and question = #{question}
+    and answer = #{answer}
+  </select>
+</mapper>

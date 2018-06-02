@@ -1,0 +1,75 @@
+<div style="float: left;margin-left:10px;width:920px;height:auto;background-color: #eee;>
+    <div style="position:relative">
+        <div style="margin-top: 30px;margin-left: 10px;">
+        <form class="form-inline">
+            <div class="form-group">
+                <label style="margin-left: 30px">订单编号:</label>
+                <input type="text" class="form-control" v-model="query.id">
+            </div>
+            <div class="form-group">
+                <label style="margin-left: 30px">订单状态:</label>
+                <select class="form-control" v-model="query.status">
+                    <option value="-1">全部</option>
+                    <option  v-for="status in statusList" :value="status.key">{{status.value}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label style="margin-left: 30px">支付类型:</label>
+                <select class="form-control" v-model="query.payType">
+                    <option value="-1">全部</option>
+                    <option  v-for="payType in payTypeList" :value="payType.key">{{payType.value}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" style="margin-left: 30px" @click="searchOrderByConditions">查询</button>
+            </div>
+        </form>
+        <div style="margin-left: 30px;margin-top: 10px;">
+            <table class="table table-bordered">
+                <tr style="height: auto">
+                    <td style="width:10%;text-align: center;">
+                        订单编号
+                    </td>
+                    <td style="width:10%;text-align: center;">
+                        下单时间
+                    </td>
+                    <td style="width:10%;text-align: center;">
+                        支付时间
+                    </td>
+                    <td style="width:10%;text-align: center;">
+                        发货时间
+                    </td>
+                    <td style="width:10%;text-align: center;">
+                        结束时间
+                    </td>
+                    <td style="width:5%;text-align: center;">
+                        订单状态
+                    </td>
+                    <td style="width:10%;text-align: center;">
+                        订单金额
+                    </td>
+                    <td style="width:5%;text-align: center;">
+                        支付类型
+                    </td>
+                    <td style="width:20%;text-align: center;">
+                        操作
+                    </td>
+                </tr>
+                <tr style="height: auto" v-for="order in orderList"  v-bind:key="key">
+                    <td style="text-align: center;">{{order.orderNo}}</td>
+                    <td style="text-align: center;">{{order.created}}</td>
+                    <td style="text-align: center;">{{order.paymentTime}}</td>
+                    <td style="text-align: center;">{{order.sendTime}}</td>
+                    <td style="text-align: center;">{{order.endTime}}</td>
+                    <td style="text-align: center;">{{order.statusDesc}}</td>
+                    <td style="text-align: center;">{{order.bal}}</td>
+                    <td style="text-align: center;">{{order.paymentTypeDesc}}</td>
+                    <td style="text-align: center;">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#editOrder">修改</button>
+                        <button class="btn btn-default" @click="queryOrderDetail(order.id)">查看详情</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

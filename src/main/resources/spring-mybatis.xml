@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 自动扫描 -->
+    <context:component-scan base-package="com.iss.shop.dao"/>
+    <aop:aspectj-autoproxy/>
+
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${driverClass}"/>
+        <property name="jdbcUrl" value="${jdbcUrl}"/>
+        <property name="user" value="${user}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+    </bean>
+
+    <!--配置扫描器，将mybatis接口的实现注入到IOC容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--扫描所有dao接口的实现加入到IOC容器中-->
+        <property name="basePackage" value="com.iss.shop.dao"></property>
+        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+    </bean>
+
+    <!--事物控制的配置-->
+    <bean id="TransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--控制住数据源-->
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!--开启基于注解的事务，使用XML配置形式的事务（必要主要的都使用配置式）-->
+    <!--<aop:config>-->
+        <!--&lt;!&ndash;切入点表达式&ndash;&gt;-->
+        <!--<aop:pointcut expression="execution(* com.iss.shop.service..*(..))" id="txPoint"></aop:pointcut>-->
+        <!--&lt;!&ndash;配置事务增强&ndash;&gt;-->
+        <!--<aop:advisor advice-ref="txAddvice" pointcut-ref="txPoint"></aop:advisor>-->
+    <!--</aop:config>-->
+    <!--&lt;!&ndash;事务增强&ndash;&gt;-->
+    <!--<tx:advice id="txAddvice" transaction-manager="TransactionManager">-->
+        <!--<tx:attributes>-->
+            <!--&lt;!&ndash;所有方法都是事务&ndash;&gt;-->
+            <!--<tx:method name="*"/>-->
+            <!--<tx:method name="get*" read-only="true"/>-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+    <!--spring 配置文件的核心点（数据源，与mybatis的整合，事务控制）-->
+
+</beans>

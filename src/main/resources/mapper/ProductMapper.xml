@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iss.shop.dao.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.iss.shop.domain.Product">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="main_image" jdbcType="VARCHAR" property="mainImage" />
+    <result column="sub_images" jdbcType="VARCHAR" property="subImages" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, product_name, sub_title, main_image,sub_images, count, price, detail,status, category_id, created
+  </sql>
+  <insert id="insert" parameterType="com.iss.shop.domain.Product" >
+    insert into shop_product (id,product_name,
+    sub_title, main_image,sub_images, count,
+    price,status, created
+    )
+    values (#{id,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR},
+    #{subTitle,jdbcType=VARCHAR}, #{mainImage,jdbcType=VARCHAR},#{subImages,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER},
+    #{price,jdbcType=DECIMAL},#{status,jdbcType=INTEGER}, now()
+    )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.iss.shop.domain.Product" >
+    update shop_product
+    set
+    product_name = #{productName,jdbcType=VARCHAR},
+    sub_title = #{subTitle,jdbcType=VARCHAR},
+    main_image = #{mainImage,jdbcType=VARCHAR},
+    sub_images = #{subImages,jdbcType=VARCHAR},
+    count = #{count,jdbcType=INTEGER},
+    price = #{price,jdbcType=DECIMAL},
+    status = #{status,jdbcType=INTEGER},
+    created = #{created,jdbcType=TIMESTAMP},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.iss.shop.domain.Product" >
+    update shop_product
+    <set >
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="subTitle != null" >
+        sub_title = #{subTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="mainImage != null" >
+        main_image = #{mainImage,jdbcType=VARCHAR},
+      </if>
+      <if test="subImages != null" >
+        sub_images = #{subImages,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByProductId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from shop_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"></include>
+    from shop_product
+    where status = 1
+    <if test="productName != null">
+      and product_name like #{productName}
+    </if>
+    <if test="categoryIdList != null" >
+      and category_id in
+      <foreach item="item" index="index" open="(" separator="," close=")" collection="categoryIdList">
+        #{item}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from shop_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectList" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List"/>
+    from shop_product
+    ORDER BY id asc
+  </select>
+
+  <select id="selectByNameAndProductId" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    from shop_product
+    <where>
+      <if test="productName != null">
+        and product_name like #{productName}
+      </if>
+      <if test="productId != null">
+        and id = #{productId}
+      </if>
+    </where>
+    order by created desc
+  </select>
+
+  <select id="searchByConditions" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    from shop_product
+    <where>
+      <if test="status != null">
+        and status = #{status}
+      </if>
+      <if test="productId != null">
+        and id = #{productId}
+      </if>
+      <if test="created != null">
+        and created = #{created}
+      </if>
+    </where>
+    order by created desc
+  </select>
+
+  <select id="findProductByCategory" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from shop_product where category_id = #{categoryId} order by created desc limit 0,5
+  </select>
+
+  <delete id="delProductById" parameterType="java.lang.Integer">
+    delete from shop_product
+    where id=#{id}
+  </delete>
+
+
+</mapper>

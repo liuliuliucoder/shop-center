@@ -1,0 +1,139 @@
+<div v-if="navShow">
+    <div class="w">
+        <div class="nav">
+            <ul class="nav-list">
+                <li class="nav-item" v-if="isLogined">
+                    <span class="link js-login"><a class="link" @click="toLogin">登陆</a></span>
+                    <span class="link js-register"><a class="link" @click="toRegister">注册</a></span>
+                </li>
+                <li class="nav-item" v-if="!isLogined">
+                    <span class="link-text">欢迎，
+                        <span class="username">{{user.userName}}</span>
+                    </span>
+                    <span class="link"><a class="link" @click="loginOut()">退出</a></span>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="toMyAccount">
+                        我的账户
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="toMyCart">
+                        <i class="fa fa-shopping-cart"></i>
+                        我的购物车(<span class="cart-count">{{myCartCount}}</span>)
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="managerToLogin">
+                        <i class="fa fa-shopping-cart"></i>
+                        管理员入口
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="header" class="header">
+        <div class="w">
+            <div class="search-con">
+                <input class="search-input" id="search-input" placeholder="请输入商品名称" v-model="keyword"/>
+                <button class="btn search-btn" id="search-btn" type="button" @click="searchByKeyword(keyword)">搜索</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="w">
+    <ul class="keywords-list">
+        <li class="keywords-item" v-for="sub in subCategory">
+            <a class="link" href="javascript:void(0);"
+               @click="searchByKeyword(sub.categoryName)">{{sub.categoryName}}</a>
+        </li>
+    </ul>
+    <div class="banner-con">
+        <div class="banner has-dots">
+            <ul>
+                <li>
+                    <a href="/detail" target="_blank">
+                        <img class="banner-img" src="/static/imgs/banner1.jpg"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="/detail" target="_blank">
+                        <img class="banner-img" src="/static/imgs/banner2.jpg"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="/detail" target="_blank">
+                        <img class="banner-img" src="/static/imgs/banner3.jpg"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="/detail" target="_blank">
+                        <img class="banner-img" src="/static/imgs/banner4.jpg"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="/detail" target="_blank">
+                        <img class="banner-img" src="/static/imgs/banner5.jpg"/>
+                    </a>
+                </li>
+            </ul>
+            <div class="banner-arrow prev">
+                <i class="fa fa-angle-left"></i>
+            </div>
+            <div class="banner-arrow next">
+                <i class="fa fa-angle-right"></i>
+            </div>
+            <ol class="dots"></ol>
+        </div>
+    </div>
+</div>
+<div class="w">
+    <div class="floor-wrap">
+        <div class="floor-title-background" style="margin-top: 10px" v-if="threeCList.length >0">
+            <h1 class="floor-title">数码3C</h1>
+        </div>
+        <ul class="floor-list" >
+            <li class="floor-item" v-for="threeC in threeCList">
+                <a href="javascript:void(0);" @click="toDetail(threeC.id)">
+                    <span class="floor-text">{{threeC.productName}}</span>
+                    <img class="floor-img" src="{{threeC.mainImage}}" alt="{{threeC.subTitle}}"/>
+                </a>
+            </li>
+        </ul>
+        <div class="floor-title-background" style="margin-top: 10px" v-if="bagList.length >0">
+            <h1 class="floor-title">服装箱包</h1>
+        </div>
+        <ul class="floor-list" >
+            <li class="floor-item" v-for="bag in bagList">
+                <a href="javascript:void(0);" @click="toDetail(bag.id)">
+                    <span class="floor-text">{{bag.productName}}</span>
+                    <img class="floor-img" src="{{bag.mainImage}}" alt="{{bag.subTitle}}"/>
+                </a>
+            </li>
+        </ul>
+        <div class="floor-title-background" style="margin-top: 10px" v-if="freshList.length >0">
+            <h1 class="floor-title">食品生鲜</h1>
+        </div>
+        <ul class="floor-list" >
+            <li class="floor-item" v-for="fresh in freshList">
+                <a href="javascript:void(0);" @click="toDetail(fresh.id)">
+                    <span class="floor-text">{{fresh.productName}}</span>
+                    <img class="floor-img" src="{{fresh.mainImage}}" alt="{{fresh.subTitle}}"/>
+                </a>
+            </li>
+        </ul>
+        <div class="floor-title-background" style="margin-top: 10px" v-if="drinkList.length >0">
+            <h1 class="floor-title">酒水饮料</h1>
+        </div>
+        <ul class="floor-list" >
+            <li class="floor-item" v-for="drink in drinkList">
+                <a href="javascript:void(0);" @click="toDetail(drink.id)">
+                    <span class="floor-text">{{drink.productName}}</span>
+                    <img class="floor-img" src="{{drink.mainImage}}" alt="{{drink.subTitle}}"/>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+

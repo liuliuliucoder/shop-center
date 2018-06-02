@@ -1,0 +1,8 @@
+<div class="w">
+    <div class="result-con register-success">
+        <h1 class="result-title">支付成功</h1>
+        <div class="result-content">
+            <a class="link" href="/">回到首页</a>
+        </div>
+    </div>
+</div>

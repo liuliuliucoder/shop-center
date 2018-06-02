@@ -1,0 +1,75 @@
+<div v-if="navShow">
+    <div class="w">
+        <div class="nav">
+            <ul class="nav-list">
+                <li class="nav-item" v-if="isLogined">
+                    <span class="link js-login"><a class="link" @click="toLogin">登陆</a></span>
+                    <span class="link js-register"><a class="link" @click="toRegister">注册</a></span>
+                </li>
+                <li class="nav-item" v-if="!isLogined">
+                    <span class="link-text">欢迎，
+                        <span class="username">{{user.userName}}</span>
+                    </span>
+                    <span class="link"><a class="link" @click="loginOut()">退出</a></span>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="toMyAccount">
+                        我的账户
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="toMyCart">
+                        <i class="fa fa-shopping-cart"></i>
+                        我的购物车(<span class="cart-count">{{myCartCount}}</span>)
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="link" @click="managerToLogin">
+                        <i class="fa fa-shopping-cart"></i>
+                        管理员入口
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="header" class="header">
+        <div class="w">
+            <div class="search-con">
+                <input class="search-input" id="search-input" placeholder="请输入商品名称" v-model="query.keyword"/>
+                <button class="btn search-btn" id="search-btn" type="button" @click="searchByKeyword">搜索</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="keyList" class="crumb">
+    <div class="w">
+        <div class="crumb-con">
+            <span class="link-text">商品列表页</span>
+        </div>
+    </div>
+</div>
+<div class="w">
+    <ul class="sort-con">
+        <li class="sort-item" data-type="default">默认排序</li>
+        <li class="sort-item active asc" data-type="price">
+            <span><a class="link" @click="searchByOrderBy(desc)">价格</a></span>
+        </li>
+    </ul>
+    <!-- list 容器 -->
+    <ul class="p-list-con">
+            <li class="p-item" v-for="product in productList"  v-bind:key="key">
+                <div class="p-img-con">
+                    <a class="link" @click="toGetProductDetail(product.id)" target="_blank">
+                        <img class="p-img" src="{{product.mainImage}}" alt="商品图片" />
+                    </a>
+                </div>
+                <div class="p-price-con">
+                    <span class="p-price">￥{{product.price}} 元</span>
+                </div>
+                <div class="p-name-con">
+                    <a class="p-name" @click="toGetProductDetail(product.id)" target="_blank">
+                        {{product.productName}}</a>
+                </div>
+            </li>
+    </ul>
+</div>

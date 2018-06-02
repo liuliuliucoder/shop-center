@@ -1,0 +1,15 @@
+<html>
+<head>
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/common/footer/index.css"/>
+</head>
+<body>
+<div class="footer">
+    <div class="w">
+        <p class="copyright">
+            Copyright © 2017 happyshopping.com All Right Reserved
+        </p>
+    </div>
+</div>
+</body>
+</html>

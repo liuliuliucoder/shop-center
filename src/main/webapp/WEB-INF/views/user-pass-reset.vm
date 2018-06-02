@@ -1,0 +1,57 @@
+<div class="container register">
+    <div class="span12 last">
+        <div class="wrap">
+            <div class="main clearfix">
+                <div class="title">
+                    <strong>找回密码</strong>
+                </div>
+                <form id="registerForm">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th style="width: 120px">
+                                <span class="requiredField">*</span>请输入用户名:
+                            </th>
+                            <td>
+                                <input type="text" id="username" v-model="user.userName" class="text" maxlength="20"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 120px">
+                                <span class="requiredField">*</span>密码提示问题:
+                            </th>
+                            <td>
+                                <input type="text" v-model="user.question" class="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 120px">
+                                <span class="requiredField">*</span>答案:
+                            </th>
+                            <td>
+                                <input type="text" v-model="user.answer" class="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 120px">
+                                <span class="requiredField">*</span>请输入新密码:
+                            </th>
+                            <td>
+                                <input type="password" id="password" v-model="user.password" class="text" maxlength="20"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                &nbsp;
+                            </th>
+                            <td>
+                                <button class="btn btn-default" @click="submit">修改</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
