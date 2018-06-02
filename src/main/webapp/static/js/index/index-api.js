@@ -77,7 +77,7 @@
         }, function (response) {
             if (func2) func2(response);
         });
-    }
+    };
 
     api.searchByConditions = function (query, func1, func2) {
         $http.post("/manages/product/searchByConditions", query).then(function (response) {
@@ -105,6 +105,14 @@
 
     api.resetPassword = function (query, func1, func2) {
         $http.post("/user/resetPassword", query).then(function (response) {
+            func1(response.data);
+        }, function (response) {
+            if (func2) func2(response);
+        });
+    };
+
+    api.forgetPassword = function (query, func1, func2) {
+        $http.post("/user/checkQuestion", query).then(function (response) {
             func1(response.data);
         }, function (response) {
             if (func2) func2(response);
@@ -246,6 +254,13 @@
 
     api.findProductById = function (p, func1, func2) {
         $http.get("/product/findProductById", {params: p}).then(function (response) {
+            func1(response.data);
+        }, function (response) {
+            if (func2) func2(response);
+        });
+    };
+    api.findProductByProductId = function (p, func1, func2) {
+        $http.post("/manages/product/findProductByProductId", p).then(function (response) {
             func1(response.data);
         }, function (response) {
             if (func2) func2(response);

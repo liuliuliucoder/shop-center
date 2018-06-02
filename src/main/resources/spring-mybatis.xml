@@ -12,6 +12,7 @@
     <context:component-scan base-package="com.iss.shop.dao"/>
     <aop:aspectj-autoproxy/>
 
+
     <!-- 配置数据源 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${driverClass}"/>
@@ -24,6 +25,8 @@
         <property name="dataSource" ref="dataSource"/>
         <!-- 自动扫描mapping.xml文件 -->
         <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+
     </bean>
 
     <!--配置扫描器，将mybatis接口的实现注入到IOC容器中-->
@@ -54,5 +57,4 @@
         <!--</tx:attributes>-->
     <!--</tx:advice>-->
     <!--spring 配置文件的核心点（数据源，与mybatis的整合，事务控制）-->
-
 </beans>

@@ -75,4 +75,40 @@
     from shop_address
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
+
+  <update id="batchUpdateByUserId">
+    update shop_address
+    set
+    receiver_name =
+    <foreach collection="list" item="pk"
+             open = "CASE ID" close="end"
+    separator=" ">
+    when #{pk.id} THEN #{pk.receiverName}
+    </foreach>,
+    receiver_mobile =
+    <foreach collection="list" item="pk"
+             open = "CASE ID" close="end"
+             separator=" ">
+      when #{pk.id} THEN #{pk.receiverMobile}
+    </foreach>,
+    address_detail =
+    <foreach collection="list" item="pk"
+             open = "CASE ID" close="end"
+             separator=" ">
+      when #{pk.id} THEN #{pk.addressDetail}
+    </foreach>,
+    post_code =
+    <foreach collection="list" item="pk"
+             open = "CASE ID" close="end"
+             separator=" ">
+      when #{pk.id} THEN #{pk.postCode}
+    </foreach>,
+    modified = now()
+    <where>
+      id in
+      <foreach collection="list" item="pk" open="(" separator="," close=")">
+        #{pk.id}
+      </foreach>
+    </where>
+  </update>
 </mapper>

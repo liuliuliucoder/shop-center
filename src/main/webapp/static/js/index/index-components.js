@@ -439,8 +439,15 @@ var components = function () {
                     nickName: "",
                     phone: "",
                     question:"",
-                    answer:""
-                }
+                    answer:"",
+                    addressList:[{
+                        receiverName:"",
+                        receiverPhone:"",
+                        receiverMobile:"",
+                        addressDetail:"",
+                        postCode:""
+                    }]
+                },
             }
         },
         methods: {
@@ -454,9 +461,19 @@ var components = function () {
                     }
                 }.bind(this));
             },
+            addRow:function(){
+                this.user.addressList.push({
+                    receiverName:"",
+                    receiverPhone:"",
+                    receiverMobile:"",
+                    addressDetail:"",
+                    postCode:""
+                });
+            },
             updateUserInfo:function () {
                 var self = this;
                 IndexApi.updateUserInfo(self.user,function (data) {
+                    console.log(self.user);
                     if (data.value) {
                         alert("修改成功");
                     } else {
@@ -499,6 +516,32 @@ var components = function () {
                     }
                 }.bind(this));
             },
+        }
+    };
+    app.forgerPassword = {
+        template: '#forgerPassword',
+        data: function () {
+            return {
+                user:{
+                    userName: "",
+                    question:"",
+                    answer:"",
+                    password:""
+                }
+            }
+        },
+        methods: {
+            findPasswordByQuestion:function () {
+                var self = this;
+                IndexApi.forgetPassword(self.user,function (data) {
+                    if (data.value) {
+                        alert("修改成功，即将跳转到登录页面！");
+                        this.$router.go("/login")
+                    } else {
+                        alert(data.message);
+                    }
+                }.bind(this));
+            }
         }
     };
     app.myOrder = {
@@ -561,6 +604,10 @@ var components = function () {
                     }
                 }.bind(this));
             },
+            toUserPassReset:function () {
+                var self = this;
+                self.$router.go("/forgerPassword");
+            }
         }
     };
     app.managersLogin = {
@@ -694,9 +741,11 @@ var components = function () {
                 productEditForm:{
                     id: null,
                     productName: null,
-                    subTitle: null,
+                    subtitle: null,
+                    subTitle:null,
                     price: null,
                     status: null,
+                    stock:0,
                     count:0,
                     categoryId:null,
                     mainImage:null
@@ -794,6 +843,20 @@ var components = function () {
                     }
                 }.bind(this));
             },
+            updateProduct:function () {
+                var self = this;
+                self.productEditForm.mainImage = document.getElementById("modifyImg").value;
+                self.productEditForm.subTitle = self.productEditForm.subTitle;
+                self.productEditForm.count = self.productEditForm.stock;
+                IndexApi.saveOrUpdateProduct(self.productEditForm,function (data) {
+                    if(data.value){
+                        alert(data.message);
+                        self.getProductList();
+                    } else{
+                        alert(data.message);
+                    }
+                }.bind(this));
+            },
 
 
             delProduct: function (productId) {
@@ -803,6 +866,16 @@ var components = function () {
                     if(data.value){
                         alert("删除成功！");
                         self.getProductList();
+                    } else{
+                        alert(data.message);
+                    }
+                }.bind(this));
+            },
+            editProductInfo:function (productId) {
+                var self = this;
+                IndexApi.findProductByProductId(productId,function (data) {
+                    if(data.value){
+                        self.productEditForm = data.data;
                     } else{
                         alert(data.message);
                     }

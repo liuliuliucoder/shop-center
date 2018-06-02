@@ -1,17 +1,23 @@
 package com.iss.shop.service.impl;
 
+import com.iss.shop.dao.AddressMapper;
 import com.iss.shop.dao.UserMapper;
+import com.iss.shop.domain.Address;
 import com.iss.shop.domain.RoleEnum;
 import com.iss.shop.domain.User;
+import com.iss.shop.service.AddressService;
 import com.iss.shop.service.UserService;
 import com.iss.shop.util.MD5Util;
 import com.iss.shop.util.Result;
 import com.iss.shop.util.TokenCache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -22,8 +28,13 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper userMapper;
+    @Autowired
+    private AddressMapper addressMapper;
 
     private static final String KEY="2";
+
+    @Autowired
+    private AddressService addressService;
 
     /**
      * 登录
@@ -117,15 +128,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result checkAnswer(String userName,String question,String answer){
+    public Result checkAnswer(String userName,String question,String answer,String password){
         Result result = new Result();
         result.setValue(false);
         int resultCount = userMapper.checkAnswer(userName,question,answer);
         if(resultCount>0){
-            //说明问题及问题答案是这个用户的,并且是正确的
-            String forgetToken = UUID.randomUUID().toString();
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX+userName,forgetToken);
-            result.setData(forgetToken);
+
             result.setValue(true);
             return result;
         }
@@ -139,7 +147,9 @@ public class UserServiceImpl implements UserService {
      * @return int
      */
     @Override
-    public boolean updatePasswordByUserNameAndQuestionAndAnswer(User user){
+    public Result updatePasswordByUserNameAndQuestionAndAnswer(User user){
+        Result result = new Result();
+        result.setValue(false);
         User userInfo = userMapper.getUserByUserName(user.getUserName());
         if(!StringUtils.isEmpty(user.getAnswer())){
             if((userInfo.getQuestion()).equals(user.getQuestion()) && (userInfo.getAnswer()).equals(user.getAnswer())){
@@ -150,11 +160,14 @@ public class UserServiceImpl implements UserService {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    return userMapper.updatePassword(user.getPassword(),user.getUserName());
+                    result.setValue(userMapper.updatePassword(user.getPassword(),user.getUserName()));
+                    return result;
                 }
             }
         }
-        return false;
+        result.setValue(false);
+        result.setMessage("密保问题答案错误！");
+        return result;
     }
 
     @Override
@@ -249,8 +262,16 @@ public class UserServiceImpl implements UserService {
         updateUser.setAnswer(user.getAnswer());
         updateUser.setModified(new Date());
 
+        List<Address> addressList = new ArrayList<Address>();
+        for(Address address : user.getAddressList()){
+            Address ad = address;
+            ad.setUserId(user.getId());
+            addressList.add(ad);
+        }
         int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
-        if(updateCount > 0){
+        int updateAddress = addressMapper.batchUpdateByUserId(addressList);
+
+        if(updateCount > 0 && updateAddress > 0){
             result.setValue(true);
             result.setMessage("更新个人信息成功");
             return result;

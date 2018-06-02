@@ -46,6 +46,23 @@ public class ProductManageController {
             return result;
         }
     }
+    @PostMapping("/findProductByProductId")
+    @ResponseBody
+    public Result findProductByProductId(HttpSession session, @RequestBody Integer productId){
+        Result result = new Result();
+        result.setValue(false);
+        User user = (User)session.getAttribute("currentUser");
+        if(user == null){
+            result.setMessage("用户未登录,请登录管理员");
+            return result;
+        }
+        if(userService.checkAdminRole(user).getValue()){
+            return productService.getProductDetail(productId);
+        }else{
+            result.setMessage("无权限操作");
+            return result;
+        }
+    }
 
     @GetMapping("/setSaleStatus")
     @ResponseBody

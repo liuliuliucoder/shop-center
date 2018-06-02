@@ -31,7 +31,7 @@
                         <th>&nbsp;</th>
                         <td>
                             <input type="button" class="submit" value="登 录" @click="loginMethod()"/>
-                            <a style="margin-left: 30px;padding-left:20px;color: red" href="/resetPassword">忘记密码？</a>
+                            <a style="margin-left: 30px;padding-left:20px;color: red" @click="toUserPassReset">忘记密码？</a>
                         </td>
                     </tr>
                     <tr class="register">

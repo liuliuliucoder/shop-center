@@ -22,4 +22,6 @@ public interface AddressMapper {
 
     Address selectByPrimaryKey(Integer id);
 
+    int batchUpdateByUserId(List<Address> addressList);
+
 }

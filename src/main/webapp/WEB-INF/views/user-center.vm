@@ -37,8 +37,43 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">地址：</label>
+                            <div class="col-sm-10">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>收货人</th>
+                                        <th>手机号</th>
+                                        <th>详细地址</th>
+                                        <th>邮编</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="item in user.addressList" style="border-top: 5px solid #fff;">
+                                        <td>
+                                            <input class="form-control input-sm" v-model="item.receiverName"></input>
+                                        </td>
+                                        <td style="border-left: 2px solid #fff;">
+                                            <input class="form-control input-sm" v-model="item.receiverMobile" ></input>
+                                        </td>
+                                        <td style="border-left: 2px solid #fff;">
+                                            <input class="form-control input-sm" v-model="item.addressDetail"></input>
+                                        </td>
+                                        <td style="border-left: 2px solid #fff;">
+                                            <input class="form-control input-sm" v-model="item.postCode"></input>
+                                        </td>
+                                        <td style="border-left: 2px solid #fff;">
+                                            <button class="btn btn-default" v-if="user.addressList.length-1==$index" @click="addRow" style="margin-left: 5px;">添加</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-default" @click="updateUserInfo">修改</button>
+                                <button class="btn btn-primary" @click="updateUserInfo">修改</button>
                             </div>
                         </div>
                     </form>

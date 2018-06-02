@@ -1,7 +1,9 @@
 package com.iss.shop.controller;
 
+import com.iss.shop.domain.Address;
 import com.iss.shop.domain.PasswordReset;
 import com.iss.shop.domain.User;
+import com.iss.shop.service.AddressService;
 import com.iss.shop.service.UserService;
 import com.iss.shop.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author liuxiaodan
@@ -22,6 +25,8 @@ import java.util.Date;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private AddressService addressService;
 
     @PostMapping("/loginAction")
     @ResponseBody
@@ -50,6 +55,9 @@ public class UserController {
             result.setMessage("用户未登录,无法获取当前用户的信息");
             return result;
         }
+        User userInfo = userService.getUserByUserName(user.getUserName());
+        List<Address> addressList = addressService.selectByUserId(userInfo.getId());
+        user.setAddressList(addressList);
         result.setData(user);
         result.setValue(true);
         return result;
@@ -68,8 +76,13 @@ public class UserController {
 
     @PostMapping("/checkQuestion")
     @ResponseBody
-    public Result forgetCheckAnswer(String userName,String question,String answer){
-        return userService.checkAnswer(userName,question,answer);
+    public Result forgetCheckAnswer(@RequestBody PasswordReset passwordReset){
+        User user = new User();
+        user.setUserName(passwordReset.getUserName());
+        user.setQuestion(passwordReset.getQuestion());
+        user.setAnswer(passwordReset.getAnswer());
+        user.setPassword(passwordReset.getPassword());
+        return userService.updatePasswordByUserNameAndQuestionAndAnswer(user);
     }
 
     @PostMapping("/forgetResetPassword")

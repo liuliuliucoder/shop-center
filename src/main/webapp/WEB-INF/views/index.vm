@@ -34,6 +34,9 @@
 <template id="myAccount">
     #parse("/account_content.vm")
 </template>
+<template id="forgerPassword">
+    #parse("/user-pass-reset.vm")
+</template>
 <template id="list">
     #include("/list.vm")
 </template>

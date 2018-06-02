@@ -1,6 +1,7 @@
 package com.iss.shop.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private Integer id;
@@ -30,6 +31,8 @@ public class User {
     private Date created;
 
     private Date modified;
+
+    private List<Address> addressList;
 
     public Integer getId() {
         return id;
@@ -141,5 +144,13 @@ public class User {
 
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
+    }
+
+    public List<Address> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
     }
 }

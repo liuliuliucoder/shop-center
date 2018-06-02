@@ -7,6 +7,9 @@ import com.iss.shop.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service("addressService")
 public class AddressServiceImpl implements AddressService {
 
@@ -70,6 +73,13 @@ public class AddressServiceImpl implements AddressService {
         result.setValue(true);
         result.setData(address);
         return result;
+    }
+
+    @Override
+    public List<Address> selectByUserId(Integer userId){
+        List<Address> addressList = new ArrayList<Address>();
+        addressList = addressMapper.selectByUserId(userId);
+        return addressList;
     }
 
 

@@ -45,7 +45,7 @@
                                 &nbsp;
                             </th>
                             <td>
-                                <button class="btn btn-default" @click="submit">修改</button>
+                                <button class="btn btn-default" @click="findPasswordByQuestion">修改</button>
                             </td>
                         </tr>
                         </tbody>

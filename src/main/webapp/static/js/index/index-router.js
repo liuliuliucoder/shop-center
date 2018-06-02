@@ -28,6 +28,9 @@ var routerInit = function(app) {
         '/userCenter':{
             component:app.userCenter
         },
+        '/forgerPassword':{
+            component:app.forgerPassword
+        },
         '/account':{
             component: app.myAccount,
             subRoutes:

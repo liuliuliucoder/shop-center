@@ -35,7 +35,7 @@ public interface UserService {
      * @param user
      * @return boolean
      */
-    boolean updatePasswordByUserNameAndQuestionAndAnswer(User user);
+    Result updatePasswordByUserNameAndQuestionAndAnswer(User user);
 
     Result resetPassword(String oldPassword,String newPassword,User user);
 
@@ -45,7 +45,7 @@ public interface UserService {
 
     Result selectQuestion(String userName);
 
-    Result checkAnswer(String userName,String question,String answer);
+    Result checkAnswer(String userName,String question,String answer,String password);
 
     Result getInformation(Integer userId);
 

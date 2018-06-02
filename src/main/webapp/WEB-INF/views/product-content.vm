@@ -62,7 +62,7 @@
                             <td style="font-size:14px;text-align: center;">{{product.count}}</td>
                             <td style="font-size:14px;text-align: center;"><img width="40px" height="40px" style="margin-left: 40px"  src="{{product.mainImage}}" alt="商品图片" /></td>
                             <td style="font-size:14px;text-align: center;">
-                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editProduct">修改</button>
+                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editProduct" @click="editProductInfo(product.id)">修改</button>
                                 <button class="btn btn-info btn-xs" @click="queryProductDetail(product.id)">查看详情</button>
                                 <button class="btn btn-danger btn-xs" @click="delProduct(product.id)">删除</button>
                             </td>
@@ -84,16 +84,16 @@
                     <div class="modal-body">
                         <form enctype="multipart/form-data">
                             <div class="form-group">
-                                商品编号:<input type="text" class="form-control"  v-model="productEditForm.id" value="{{product.id}}" disabled>
+                                商品编号:<input type="text" class="form-control"  v-model="productEditForm.id" value="{{productEditForm.id}}" disabled>
                             </div>
                             <div class="form-group">
-                                商品名称:<input type="text" class="form-control"  v-model="productEditForm.productName" value="{{product.productName}}">
+                                商品名称:<input type="text" class="form-control"  v-model="productEditForm.productName" value="{{productEditForm.productName}}">
                             </div>
                             <div class="form-group">
-                                子标题:<input type="text" class="form-control" v-model="productEditForm.subTitle" value="{{product.subTitle}}">
+                                子标题:<input type="text" class="form-control" v-model="productEditForm.subtitle" value="{{productEditForm.subtitle}}">
                             </div>
                             <div class="form-group">
-                                价格:<input type="text" class="form-control" v-model="productEditForm.price" value="{{product.price}}">
+                                价格:<input type="text" class="form-control" v-model="productEditForm.price" value="{{productEditForm.price}}">
                             </div>
                             <div class="form-group">
                                 商品状态:
@@ -108,17 +108,29 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                库存:<input type="text" class="form-control"  v-model="productEditForm.count" value="{{product.count}}">
+                                库存:<input type="text" class="form-control"  v-model="productEditForm.stock">
                             </div>
                             <div class="form-group" id="uploadForm">
+                                <div class="h4">图片预览</div>
+                                <div class="fileinput fileinput-new">
+                                    <div class="fileinput-new thumbnail" style="width: 200px;height: auto;max-height:150px;">
+                                        <input type="hidden" id="modifyImg" class="form-control" name="modifyImg" value="modifyImg"/>
+                                        <img id="picImg" style="width: 100%;height: auto;max-height: 140px;" src="{{productEditForm.mainImage}}" alt="" />
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                    <div>
+                                    <span class="btn btn-primary btn-file">
+                                        <span class="fileinput-new">选择文件</span>
+                                        <input type="file" name="file" id="inputFile" accept="image/gif,image/jpeg,image/x-png" onchange="modifyFileUpload();"/>
+                                    </span>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" @onclick="saveOrUpdateProduct">
-                            保存
-                        </button>
+                        <button type="button" class="btn btn-primary" @click="updateProduct">保存</button>
                     </div>
                 </div>
             </div>
@@ -163,7 +175,7 @@
                                 <div class="h4">图片预览</div>
                                 <div class="fileinput fileinput-new">
                                     <div class="fileinput-new thumbnail" style="width: 200px;height: auto;max-height:150px;">
-                                        <input id="addImage" class="form-control" name="addImage" value="addImage"/>
+                                        <input type="hidden" id="addImage" class="form-control" name="addImage" value="addImage"/>
                                         <img id="picImg" style="width: 100%;height: auto;max-height: 140px;" src="/static/imgs/noimage.png" alt="" />
                                     </div>
                                     <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
