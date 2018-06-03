@@ -1,4 +1,4 @@
-<div style="float: left;margin-left:10px;width:920px;height:auto;background-color: #eee;>
+<div style="float: left;margin-left:10px;width:920px;height:800px;background-color: #eee;>
     <div style="position:relative">
         <div style="margin-top: 30px;margin-left: 10px;">
         <form class="form-inline">
@@ -28,7 +28,7 @@
             <table class="table table-bordered">
                 <tr style="height: auto">
                     <td style="width:10%;text-align: center;">
-                        订单编号
+                        订单ID
                     </td>
                     <td style="width:10%;text-align: center;">
                         下单时间
@@ -38,9 +38,6 @@
                     </td>
                     <td style="width:10%;text-align: center;">
                         发货时间
-                    </td>
-                    <td style="width:10%;text-align: center;">
-                        结束时间
                     </td>
                     <td style="width:5%;text-align: center;">
                         订单状态
@@ -56,20 +53,67 @@
                     </td>
                 </tr>
                 <tr style="height: auto" v-for="order in orderList"  v-bind:key="key">
-                    <td style="text-align: center;">{{order.orderNo}}</td>
+                    <td style="text-align: center;">{{order.id}}</td>
                     <td style="text-align: center;">{{order.created}}</td>
                     <td style="text-align: center;">{{order.paymentTime}}</td>
                     <td style="text-align: center;">{{order.sendTime}}</td>
-                    <td style="text-align: center;">{{order.endTime}}</td>
                     <td style="text-align: center;">{{order.statusDesc}}</td>
-                    <td style="text-align: center;">{{order.bal}}</td>
+                    <td style="text-align: center;">{{order.payment}}</td>
                     <td style="text-align: center;">{{order.paymentTypeDesc}}</td>
                     <td style="text-align: center;">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#editOrder">修改</button>
-                        <button class="btn btn-default" @click="queryOrderDetail(order.id)">查看详情</button>
+                        <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editOrder" @click="editOrderInfo(order.id)">修改</button>
                     </td>
                 </tr>
             </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">修改</h4>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data">
+                    <div class="form-group">
+                        订单ID:<input type="text" class="form-control"  v-model="orderEditForm.id" value="{{orderEditForm.id}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        下单时间:<input type="text" class="form-control"  v-model="orderEditForm.created" value="{{orderEditForm.created}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        支付时间:<input type="text" class="form-control" v-model="orderEditForm.paymentTime" value="{{orderEditForm.paymentTime}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        发货时间:<input type="text" class="form-control" v-model="orderEditForm.sendTime" value="{{orderEditForm.sendTime}}">
+                    </div>
+                    <div class="form-group">
+                        订单状态:
+                        <select class="form-control" v-model="orderEditForm.status">
+                            <option  v-for="status in statusList" :value="status.key">{{status.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        订单金额:<input type="text" class="form-control"  v-model="orderEditForm.payment" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-left: 30px">支付类型:</label>
+                        <select class="form-control" v-model="orderEditForm.paymentType">
+                            <option value="-1">全部</option>
+                            <option  v-for="paymentType in payTypeList" :value="paymentType.key">{{paymentType.value}}</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="updateOrder">保存</button>
+            </div>
         </div>
     </div>
 </div>

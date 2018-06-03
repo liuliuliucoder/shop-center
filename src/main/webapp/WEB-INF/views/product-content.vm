@@ -1,5 +1,5 @@
 
-<div style="float: left;margin-left:10px;width:920px;height:auto;background-color: #eee;">
+<div style="float: left;margin-left:10px;width:920px;height:800px;background-color: #eee;">
     <div style="position:relative">
         <div style="margin-top: 30px;margin-left: 10px;">
             <div>
@@ -10,16 +10,16 @@
                     </div>
                     <div class="form-group">
                         <label style="margin-left: 30px">商品状态:</label>
-                        <select class="form-control">
-                            <option value="0">全部</option>
-                            <option v-for="status in statusList" value="status.key">{{status.value}}</option>
+                        <select class="form-control" v-model="query.status">
+                            <option value="-1">全部</option>
+                            <option  v-for="status in statusList" :value="status.key">{{status.value}}</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label style="margin-left: 30px">类别:</label>
-                        <select class="form-control">
+                        <select class="form-control" v-model="query.categoryId">
                             <option value="-1">全部</option>
-                            <option v-for="category in categoryList" value="category.key">{{category.value}}</option>
+                            <option v-for="categoryId in categoryList" :value="categoryId.key">{{categoryId.value}}</option>
                         </select>
                     </div>
                     <button class="btn btn-default" style="margin-left: 20px" @click="searchByConditions">查询</button>

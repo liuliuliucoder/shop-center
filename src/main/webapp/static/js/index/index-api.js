@@ -55,6 +55,23 @@
             if (func2) func2(response);
         });
     };
+
+    api.getMyOrder = function ( func1, func2) {
+        $http.post("/order/getMyOrder").then(function (response) {
+            func1(response.data);
+        }, function (response) {
+            if (func2) func2(response);
+        });
+    };
+
+    api.cancelOrder = function (query,func1, func2) {
+        $http.post("/order/cancelOrder",query).then(function (response) {
+            func1(response.data);
+        }, function (response) {
+            if (func2) func2(response);
+        });
+    };
+
     api.getCategoryList = function ( func1, func2) {
         $http.post("/manages/product/getCategoryList").then(function (response) {
             func1(response.data);
@@ -94,6 +111,22 @@
             if (func2) func2(response);
         });
     };
+
+    api.getOrderByOrderId = function (query, func1, func2) {
+        $http.post("/order/getOrderByOrderId", query).then(function (response) {
+            func1(response.data);
+        }, function (response) {
+            if (func2) func2(response);
+        });
+    };
+    api.updateOrder = function (query, func1, func2) {
+        $http.post("/order/updateOrder", query).then(function (response) {
+            func1(response.data);
+        }, function (response) {
+            if (func2) func2(response);
+        });
+    };
+
 
     api.registerAction = function (query, func1) {
         $http.post("/user/registerAction", query).then(function (response) {
@@ -221,6 +254,15 @@
             if (func2) func2(response);
         });
     };
+
+    api.getOrderDetail = function (query, func1, func2) {
+        $http.post("/order/getOrderDetail", query).then(function (response) {
+            func1(response.data);
+        }, function (response) {
+            if (func2) func2(response);
+        });
+    };
+
     api.getOrderPrice = function (query, func1, func2) {
         $http.post("/order/getOrderPrice", query).then(function (response) {
             func1(response.data);

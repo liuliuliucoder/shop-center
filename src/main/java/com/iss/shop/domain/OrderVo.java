@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public class OrderVo {
+    private Integer id;
 
     private String orderNo;
 
@@ -170,5 +171,13 @@ public class OrderVo {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -549,29 +549,77 @@ var components = function () {
         route: {
             data: function (transition) {
                 var self = this;
-                self.$router.go("/account/myOrder");
-                self.getUserInfo();
+                self.$router.go("/account/order");
+                self.getMyOrder();
+
             }
         },
         data: function () {
             return {
-                user:{
-                    password:"",
-                    oldPassword:"",
-                    rePassword:""
-                }
+                orderList:[],
+                query: {
+                   id:null,
+                },
+                orderVo: {
+                    id:null,
+                    orderNo: null,
+                    orderDetailVoList: [],
+                    addressVo: {},
+                },
+                cartList: [],
+                addressVo: {},
+                orderNo:null,
+                orderPrice:null
             }
         },
         methods: {
-            getUserInfo: function () {
+            getMyOrder:function () {
                 var self = this;
-                IndexApi.getUserInfo(function (data) {
-                    if (data.value) {
-                        self.user = data.data;
-                    } else {
-                        alert("获取用户信息失败");
+                IndexApi.getMyOrder(function (data) {
+                    if(data.value){
+                        self.orderList = data.content;
+                    } else{
+                        alert(data.message);
                     }
                 }.bind(this));
+            },
+            cancelOrder:function (id) {
+                var self = this;
+                self.query.id = id;
+                IndexApi.cancelOrder(self.query,function (data) {
+                    if(data.value){
+                        alert("取消成功!");
+                        self.getMyOrder();
+                    } else{
+                        alert(data.message);
+                    }
+                }.bind(this));
+            },
+            getOrderDetail:function (id) {
+                var self = this;
+                self.query.id = id;
+                IndexApi.getOrderDetail(self.query,function (data) {
+                    if(data.value){
+                        self.orderVo = data.data;
+                        self.cartList = data.data.orderDetailVoList;
+                        self.addressVo = self.orderVo.addressVo;
+                        self.orderNo = self.orderVo.orderNo;
+                        self.getOrderPrice(self.orderNo);
+                    } else{
+                        alert(data.message);
+                    }
+                }.bind(this));
+            },
+            getOrderPrice:function (orderNo) {
+                var self = this;
+                self.orderVo.orderNo = orderNo;
+                IndexApi.getOrderPrice(self.orderVo, function (data) {
+                    self.orderPrice = data.data;
+                }.bind(this));
+            },
+            toProductDetail: function (productId) {
+                var self = this;
+                this.$router.go('/product/detail?id=' + productId);
             },
         }
     };
@@ -724,7 +772,7 @@ var components = function () {
                 query: {
                     id: null,
                     status: null,
-                    category: null,
+                    categoryId: null,
                     pageNum: 1,
                     pageSize: 20
                 },
@@ -800,6 +848,7 @@ var components = function () {
             },
             searchByConditions: function () {
                 var self = this;
+                alert(self.query.status);
                 IndexApi.searchByConditions(self.query, function (data) {
                     if(data.value){
                         self.productList = data.content;
@@ -846,7 +895,7 @@ var components = function () {
             updateProduct:function () {
                 var self = this;
                 self.productEditForm.mainImage = document.getElementById("modifyImg").value;
-                self.productEditForm.subTitle = self.productEditForm.subTitle;
+                self.productEditForm.subTitle = self.productEditForm.subtitle;
                 self.productEditForm.count = self.productEditForm.stock;
                 IndexApi.saveOrUpdateProduct(self.productEditForm,function (data) {
                     if(data.value){
@@ -921,7 +970,16 @@ var components = function () {
                     created:"",
                 },
                 statusList:[],
-                payTypeList:[]
+                payTypeList:[],
+                orderEditForm:{
+                    id:null,
+                    created:null,
+                    paymentTime:null,
+                    sendTime:null,
+                    status:null,
+                    payment:null,
+                    paymentType:null,
+                }
             }
         },
         created: function () {
@@ -971,7 +1029,7 @@ var components = function () {
             },
             getPayTypeList: function () {
                 var self = this;
-                IndexApi.getOrderStatusList(function (data) {
+                IndexApi.getPayTypeList(function (data) {
                     if(data.value){
                         self.payTypeList = data.content;
                     } else{
@@ -999,6 +1057,29 @@ var components = function () {
                         alert(data.message);
                     }
 
+                }.bind(this));
+            },
+            editOrderInfo:function (id) {
+                var self = this;
+                self.query.id = id;
+                IndexApi.getOrderByOrderId(self.query, function (data) {
+                    if(data.value){
+                        self.orderEditForm = data.data;
+                    } else{
+                        alert(data.message);
+                    }
+
+                }.bind(this));
+            },
+            updateOrder:function () {
+                var self = this;
+                IndexApi.updateOrder(self.orderEditForm, function (data) {
+                    if(data.value){
+                        alert("修改成功！");
+                        self.getOrderList();
+                    } else{
+                        alert(data.message);
+                    }
                 }.bind(this));
             }
         }
@@ -1449,7 +1530,6 @@ var components = function () {
                 self.getUserInfo();
                 self.getMyCartCount();
                 self.createOrder();
-                self.getOrderPrice();
             }
         },
         data: function () {
@@ -1532,11 +1612,13 @@ var components = function () {
                     self.cartList = data.content;
                     self.addressVo = self.orderVo.addressVo;
                     self.orderNo = self.orderVo.orderNo;
+                    self.getOrderPrice(self.orderNo);
                 }.bind(this));
             },
-            getOrderPrice:function () {
+            getOrderPrice:function (orderNo) {
                 var self = this;
-                IndexApi.getOrderPrice(self.orderVo.orderNo, function (data) {
+                self.orderVo.orderNo = orderNo;
+                IndexApi.getOrderPrice(self.orderVo, function (data) {
                     self.orderPrice = data.data;
                 }.bind(this));
             },

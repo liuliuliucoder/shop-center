@@ -36,9 +36,9 @@ public class OrderController {
         return orderService.createOrder(user.getId(),addressId);
     }
 
-    @PostMapping("/getOrderPrice")
+    @PostMapping("/getOrderDetail")
     @ResponseBody
-    public Result getOrderPrice(@RequestBody String orderNo, HttpSession session){
+    public Result getOrderDetailByOrderNo(@RequestBody OrderVo orderVo, HttpSession session){
         Result result = new Result();
         result.setValue(false);
         User user = (User)session.getAttribute("currentUser");
@@ -46,13 +46,26 @@ public class OrderController {
             result.setMessage("用户未登录,请登录");
             return result;
         }
-        Result<OrderVo> orderVoResult = orderService.getOrderDetail(user.getId(),orderNo);
-        List<OrderVo> orderDetailVoList = orderVoResult.getContent();
-        BigDecimal orderPrice = BigDecimal.valueOf(0);
-        for(OrderVo orderVo : orderDetailVoList){
-            orderPrice = orderPrice.add(orderVo.getPayment());
+        return orderService.getOrderDetailByOrderNo(user.getId(),orderVo.getId());
+    }
+
+    @PostMapping("/getOrderPrice")
+    @ResponseBody
+    public Result getOrderPrice(@RequestBody OrderPrice orderPrice , HttpSession session){
+        Result result = new Result();
+        result.setValue(false);
+        User user = (User)session.getAttribute("currentUser");
+        if(user ==null){
+            result.setMessage("用户未登录,请登录");
+            return result;
         }
-        result.setData(orderPrice);
+        Result<OrderVo> orderVoResult = orderService.getOrderDetail(user.getId(),orderPrice.getOrderNo());
+        List<OrderDetailVo> orderDetailVoList = orderVoResult.getData().getOrderDetailVoList();
+        BigDecimal totalPrice = BigDecimal.valueOf(0);
+        for(OrderDetailVo orderVo : orderDetailVoList){
+            totalPrice = totalPrice.add(orderVo.getTotalPrice());
+        }
+        result.setData(totalPrice);
         result.setValue(true);
         return result;
     }
@@ -106,7 +119,7 @@ public class OrderController {
             result.setMessage("用户未登录,请登录");
             return result;
         }
-        return orderService.getOrderList(user.getId(),pageNum,pageSize);
+        return orderService.getOrderList(pageNum,pageSize);
     }
 
     @PostMapping("/searchOrderByConditions")
@@ -121,6 +134,70 @@ public class OrderController {
         }
         if(userService.checkAdminRole(user).getValue()){
             return orderService.searchOrderByConditions(query);
+
+        }else{
+            result.setMessage("无权限操作");
+            return result;
+        }
+    }
+
+    @PostMapping("/getMyOrder")
+    @ResponseBody
+    public Result getMyOrder(HttpSession session){
+        Result result = new Result();
+        result.setValue(false);
+        User user = (User)session.getAttribute("currentUser");
+        if(user == null){
+            result.setMessage("用户未登录,请先登录！");
+            return result;
+        }
+        return orderService.getMyOrder(user.getId());
+    }
+
+    @PostMapping("/cancelOrder")
+    @ResponseBody
+    public Result cancelOrder(@RequestBody OrderVo orderVo, HttpSession session){
+        Result result = new Result();
+        result.setValue(false);
+        User user = (User)session.getAttribute("currentUser");
+        if(user == null){
+            result.setMessage("用户未登录,请登录管理员");
+            return result;
+        }
+        return orderService.updateOrderStatus(orderVo.getId());
+    }
+
+    @PostMapping("/getOrderByOrderId")
+    @ResponseBody
+    public Result getOrderByOrderId(@RequestBody OrderQuery query, HttpSession session){
+        Result result = new Result();
+        result.setValue(false);
+        User user = (User)session.getAttribute("currentUser");
+        if(user == null){
+            result.setMessage("用户未登录,请登录管理员");
+            return result;
+        }
+        if(userService.checkAdminRole(user).getValue()){
+            return orderService.getOrderByOrderId(query);
+
+        }else{
+            result.setMessage("无权限操作");
+            return result;
+        }
+    }
+
+    @PostMapping("/updateOrder")
+    @ResponseBody
+    public Result updateOrder(@RequestBody OrderVo orderVo, HttpSession session){
+        Result result = new Result();
+        result.setValue(false);
+        User user = (User)session.getAttribute("currentUser");
+        if(user == null){
+            result.setMessage("用户未登录,请登录管理员");
+            return result;
+        }
+        if(userService.checkAdminRole(user).getValue()){
+            return orderService.updateOrder(orderVo);
 
         }else{
             result.setMessage("无权限操作");

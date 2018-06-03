@@ -34,20 +34,18 @@
     </div>
     <div id="header" class="header">
         <div class="w">
-            <div class="search-con">
+            <div class="submit-con" style="text-align: right;margin-bottom: 10px">
+                <span class="btn btn-submit"><a class="link" @click="toIndex">继续购物</a></span>
             </div>
         </div>
     </div>
 </div>
 <div id="cart" class="crumb">
-    <div class="w">
-        <div class="crumb-con">
-            <span class="link-text">购物车</span>
-        </div>
+    <div>
+        <span style="margin-left: 10px;font-size: 18px">购物车</span>
     </div>
 </div>
 <div class="page-wrap w">
-    <div style="text-align: right"><button @click="toIndex">继续购物</button></div>
     <div class="cart-header">
             <table class="cart-table">
                 <tr v-for="cart in cartList">

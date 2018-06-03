@@ -13,18 +13,18 @@ public interface OrderMapper {
 
     int insert(Order record);
 
-    int insertSelective(Order record);
-
-    Order selectByPrimaryKey(Integer id);
-
     int updateByPrimaryKeySelective(Order record);
-
-    int updateByPrimaryKey(Order record);
 
     Order selectByUserIdAndOrderNo(@Param("userId")Integer userId, @Param("orderNo")String orderNo);
 
     List<Order> selectByUserId(Integer userId);
 
     List<Order> searchOrderByConditions(OrderQuery query);
+
+    List<Order> getAllOrder();
+
+    Order getOrderByOrderId(Integer id);
+
+    int updateOrderStatus(@Param("id")Integer id, @Param("status")Integer status);
 
 }

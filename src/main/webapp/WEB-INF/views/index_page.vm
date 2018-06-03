@@ -57,34 +57,7 @@
                         <img class="banner-img" src="/static/imgs/banner1.jpg"/>
                     </a>
                 </li>
-                <li>
-                    <a href="/detail" target="_blank">
-                        <img class="banner-img" src="/static/imgs/banner2.jpg"/>
-                    </a>
-                </li>
-                <li>
-                    <a href="/detail" target="_blank">
-                        <img class="banner-img" src="/static/imgs/banner3.jpg"/>
-                    </a>
-                </li>
-                <li>
-                    <a href="/detail" target="_blank">
-                        <img class="banner-img" src="/static/imgs/banner4.jpg"/>
-                    </a>
-                </li>
-                <li>
-                    <a href="/detail" target="_blank">
-                        <img class="banner-img" src="/static/imgs/banner5.jpg"/>
-                    </a>
-                </li>
             </ul>
-            <div class="banner-arrow prev">
-                <i class="fa fa-angle-left"></i>
-            </div>
-            <div class="banner-arrow next">
-                <i class="fa fa-angle-right"></i>
-            </div>
-            <ol class="dots"></ol>
         </div>
     </div>
 </div>

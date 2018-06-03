@@ -1,5 +1,6 @@
 package com.iss.shop.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order {
@@ -17,7 +18,7 @@ public class Order {
 
     private Date endTime;
 
-    private Long bal;
+    private BigDecimal bal;
 
     private Integer payType;
 
@@ -79,14 +80,6 @@ public class Order {
         this.endTime = endTime;
     }
 
-    public Long getBal() {
-        return bal;
-    }
-
-    public void setBal(Long bal) {
-        this.bal = bal;
-    }
-
     public Integer getPayType() {
         return payType;
     }
@@ -141,5 +134,13 @@ public class Order {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public BigDecimal getBal() {
+        return bal;
+    }
+
+    public void setBal(BigDecimal bal) {
+        this.bal = bal;
     }
 }

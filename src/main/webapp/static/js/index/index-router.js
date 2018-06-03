@@ -40,8 +40,8 @@ var routerInit = function(app) {
                     }, '/updatePassword':{
                         component:app.updatePassword
                     },'/order':{
-                    component:app.myOrder
-                },
+                       component:app.myOrder
+                    }
                 }
 
         },'/product/list':{
